@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        
+        // Tabulation Space optimised
+        vector<int> dp(n, 0);
+        
+        for(int row=0; row<m; row++){
+            vector<int> temp(n, 0);
+            for(int col=0; col<n; col++){
+                
+                if(row == 0 && col == 0){
+                    temp[col] = 1;
+                }
+                else{
+                    int up = 0, left = 0;
+                    if(row > 0){
+                        up = dp[col];
+                    }
+                    
+                    if(col > 0){
+                        left = temp[col-1];
+                    }
+                    temp[col] = left + up;
+                }
+            }
+            dp = temp;
+        }
+        return dp[n-1];
+    }
+};
