@@ -40,35 +40,37 @@ class Solution {
 public:
     int minFallingPathSum(vector<vector<int>>& matrix) {
         
-        // Tabulation
+        // Tabulation - space optimisation
         int n = matrix.size(), m = matrix[0].size();
-        vector<vector<int>> dp(n, vector<int>(m, 1e9));
+        vector<int> dp(m, 1e9);
         
         for(int j=0; j<m; j++){
-            dp[0][j] = matrix[0][j];
+            dp[j] = matrix[0][j];
         }
         
         for(int i=1; i<n; i++){
+            vector<int> temp(m, 1e9);
             for(int j=0; j<m; j++){
                 int up = matrix[i][j], upLeft = 1e9, upRight = 1e9;
-                up += dp[i-1][j];
+                up += dp[j];
                 
                 if(j-1>=0){
-                    upLeft = matrix[i][j] + dp[i-1][j-1];
+                    upLeft = matrix[i][j] + dp[j-1];
                 }
                 
                 if(j+1<m){
-                    upRight = matrix[i][j] + dp[i-1][j+1];
+                    upRight = matrix[i][j] + dp[j+1];
                 }
                 
-                dp[i][j] = min(up, min(upLeft, upRight));
+                temp[j] = min(up, min(upLeft, upRight));
             }
+            dp = temp;
         }
         
         int mini = INT_MAX;
         
         for(int j=0; j<m; j++){
-            mini = min(mini, dp[n-1][j]);
+            mini = min(mini, dp[j]);
         }
         return mini;
     }
