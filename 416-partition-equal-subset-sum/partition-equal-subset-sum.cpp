@@ -87,3 +87,50 @@ public:
         return dp[n-1][k];
     }
 };
+
+
+
+
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+         // Tabulation Space optimised
+        int n = nums.size(), totalSum = 0, k = 0;
+        
+        for(auto it: nums){
+            totalSum += it;
+        }
+        
+        if(totalSum % 2 == 1){
+            return false;
+        }
+        
+        k = totalSum / 2;
+        
+        vector<bool> dp(k+1, false);
+        dp[0] = true;
+        
+        if(nums[0] <= k){
+            dp[nums[0]] = true;
+        }
+        
+        for(int i=1; i<n; i++){
+            
+            vector<bool> temp(k+1, false);
+            temp[0] = true;
+            for(int target=1; target<=k; target++){
+                
+                bool notPick = dp[target];
+                bool pick = false;
+                
+                if(nums[i] <= target){
+                    pick = dp[target-nums[i]];
+                }
+                
+                temp[target] = pick || notPick;
+            }
+            dp = temp;
+        }
+        return dp[k];
+    }
+};
