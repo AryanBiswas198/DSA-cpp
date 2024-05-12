@@ -16,8 +16,9 @@ public:
         }
         
         for(int i=1; i<=nums[ind] && ind+i<n; i++){
-            if(f(ind+i, n, nums, dp)){
-                return dp[ind] = true;
+            dp[ind] = f(ind+i, n, nums, dp);
+            if(dp[ind] == 1){
+                return dp[ind];
             }
         }
         return dp[ind] = false;
