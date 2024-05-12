@@ -1,35 +1,22 @@
 class Solution {
 public:
-    bool f(int ind, int n, vector<int> &nums, vector<int> &dp){
-        
-        if(ind == n-1){
-            return true;
-        }
-        
-        if(ind >= n){
-            return false;
-        }
-        
-        
-        if(dp[ind] != -1){
-            return dp[ind];
-        }
-        
-        for(int i=1; i<=nums[ind] && ind+i<n; i++){
-            dp[ind] = f(ind+i, n, nums, dp);
-            if(dp[ind] == 1){
-                return dp[ind];
-            }
-        }
-        return dp[ind] = false;
-    }
-    
     bool canJump(vector<int>& nums) {
         
-        // Memoization
+        // Tabulation
         int n = nums.size();
-        vector<int> dp(n, -1);
+        vector<int> dp(n, 0);
         
-        return f(0, n, nums, dp);
+        dp[n-1] = true;
+        
+        for(int ind=n-2; ind>=0; ind--){
+            for(int i=1; i<=nums[ind] && ind+i<n; i++){
+                if(dp[ind+i] == true){
+                    dp[ind] = true;
+                    break;
+                }
+            }
+        }
+        
+        return dp[0];
     }
 };
