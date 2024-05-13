@@ -54,3 +54,32 @@ public:
         return n - dp[n][m];
     }
 };
+
+
+
+
+class Solution {
+public:
+    int minInsertions(string s) {
+        // Tabulation - space optimised
+        string s2 = s;
+        reverse(s2.begin(), s2.end());
+        
+        int n = s.size(), m = s2.size();
+        vector<int> dp(m+1, 0);
+        
+        for(int i=1; i<=n; i++){
+            vector<int> temp(m+1, 0);
+            for(int j=1; j<=m; j++){
+                if(s[i-1] == s2[j-1]){
+                    temp[j] = 1 + dp[j-1];
+                }
+                else{
+                    temp[j] = max(dp[j], temp[j-1]);
+                }
+            }
+            dp = temp;
+        }
+        return n - dp[m];
+    }
+};
