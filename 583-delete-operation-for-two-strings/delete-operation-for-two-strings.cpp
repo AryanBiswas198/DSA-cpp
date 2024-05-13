@@ -30,26 +30,52 @@
 // };
 
 
+// class Solution {
+// public:
+//     int minDistance(string word1, string word2) {
+        
+//         // Tabulation
+//         int n = word1.size(), m = word2.size();
+//         vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+        
+//         for(int i=1; i<=n; i++){
+//             for(int j=1; j<=m; j++){
+//                 if(word1[i-1] == word2[j-1]){
+//                     dp[i][j] = 1 + dp[i-1][j-1];
+//                 }
+//                 else{
+//                     dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+//                 }
+//             }
+//         }
+        
+//         int lcs = dp[n][m];
+//         return (n+m) - 2*lcs;
+//     }
+// };
+
+
 class Solution {
 public:
     int minDistance(string word1, string word2) {
-        
-        // Tabulation
+         // Tabulation Space optimisation
         int n = word1.size(), m = word2.size();
-        vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+        vector<int> dp(m+1, 0);
         
         for(int i=1; i<=n; i++){
+            vector<int> temp(m+1, 0);
             for(int j=1; j<=m; j++){
                 if(word1[i-1] == word2[j-1]){
-                    dp[i][j] = 1 + dp[i-1][j-1];
+                    temp[j] = 1 + dp[j-1];
                 }
                 else{
-                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                    temp[j] = max(dp[j], temp[j-1]);
                 }
             }
+            dp = temp;
         }
         
-        int lcs = dp[n][m];
+        int lcs = dp[m];
         return (n+m) - 2*lcs;
     }
 };
