@@ -61,3 +61,35 @@ public:
         return dp[0][0];
     }
 };
+
+
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        // Tabulation Space optimisation
+        int n = prices.size();
+        vector<int> dp(2, 0);
+        
+        for(int i=n-1; i>=0; i--){
+            vector<int> temp(2, 0);
+            for(int buy=0; buy<=1; buy++){
+                if(buy == 0){
+                    int pick = -prices[i] + dp[buy+1];
+                    int notPick = 0 + dp[buy];
+                    
+                    temp[buy] = max(pick, notPick);
+                }
+                else{
+                    int pick = prices[i] + dp[buy-1];
+                    int notPick = 0 + dp[buy];
+                    
+                    temp[buy] = max(pick, notPick);
+                }
+            }
+            dp = temp;
+        }
+        return dp[0];
+    }
+};
