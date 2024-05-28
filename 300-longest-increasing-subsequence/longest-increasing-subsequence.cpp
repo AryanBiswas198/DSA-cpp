@@ -54,3 +54,31 @@ public:
         return dp[0][0];
     }
 };
+
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        
+        // Tabulation - space optimised
+        int n = nums.size();
+        vector<int> dp(n+1, 0);
+        
+        for(int i=n-1; i>=0; i--){
+            vector<int> curr(n+1, 0);
+            for(int prev=i-1; prev>=-1; prev--){
+                
+                int notPick = 0 + dp[prev+1];
+                int pick = 0;
+                
+                if(prev == -1 || nums[i] > nums[prev]){
+                    pick = 1 + dp[i+1];
+                }
+                
+                curr[prev+1] = max(pick, notPick);
+            }
+            dp = curr;
+        }
+        return dp[0];
+    }
+};
