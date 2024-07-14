@@ -18,15 +18,15 @@ public:
         }
         
         ListNode *ansHead = new ListNode(-1);
-        ListNode *tail = ansHead;
+        ListNode *tail = ansHead, *temp = head;
         
-        while(head != NULL){
-            if(st.find(head->val) == st.end()){
-                ListNode *node = new ListNode(head->val);
+        while(temp != NULL){
+            if(st.find(temp->val) == st.end()){
+                ListNode *node = new ListNode(temp->val);
                 tail->next = node;
                 tail = tail->next;
             }
-            head = head->next;
+            temp = temp->next;
         }
         return ansHead->next;
     }
