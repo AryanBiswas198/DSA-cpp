@@ -4,20 +4,16 @@ public:
         
         int n = nums.size(), target = n/3;
         vector<int> ans;
-        set<int> st;
-        unordered_map<int, int> mpp;
-        
-        for(auto it: nums){
+        map<int, int> mpp;
+
+        for(auto it: nums) {
             mpp[it]++;
-            if(mpp[it] > target){
-                st.insert(it);
-            }
         }
-        
-        while(!st.empty()){
-            auto top = *(st.begin());
-            ans.push_back(top);
-            st.erase(top);
+
+        for(auto it: mpp) {
+            if(it.second > target) {
+                ans.push_back(it.first);
+            }
         }
         return ans;
     }
