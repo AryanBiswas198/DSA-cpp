@@ -10,32 +10,30 @@
  */
 class Solution {
 public:
-    ListNode *getMid(ListNode *head){
+    ListNode *getMiddle(ListNode *head) {
         
         ListNode *slow = head, *fast = head->next;
-        
-        while(fast != NULL && fast->next != NULL){
+        while(fast != NULL && fast->next != NULL) {
             slow = slow->next;
             fast = fast->next->next;
         }
         return slow;
     }
-    
-    ListNode *sort(ListNode *left, ListNode *right){
-        
-        if(left == NULL){
+
+    ListNode *sortLL(ListNode *left, ListNode *right) {
+        if(left == NULL) {
             return right;
         }
         
-        if(right == NULL){
+        if(right == NULL) {
             return left;
         }
-        
+
         ListNode *ansHead = new ListNode(-1);
         ListNode *ansTail = ansHead;
-        
-        while(left != NULL && right != NULL){
-            if(left->val < right->val){
+
+        while(left != NULL && right != NULL) {
+            if(left->val < right->val) {
                 ansTail->next = left;
                 ansTail = ansTail->next;
                 left = left->next;
@@ -46,38 +44,35 @@ public:
                 right = right->next;
             }
         }
-        
-        while(left != NULL){
+
+        while(left != NULL) {
             ansTail->next = left;
             ansTail = ansTail->next;
             left = left->next;
         }
-        
-        while(right != NULL){
+
+        while(right != NULL) {
             ansTail->next = right;
             ansTail = ansTail->next;
             right = right->next;
         }
+
         return ansHead->next;
     }
-    
+
     ListNode* sortList(ListNode* head) {
         
-        // Optimal Approach
-        
-        if(head == NULL || head->next == NULL){
+        if(head == NULL || head->next == NULL) {
             return head;
         }
-        
-        ListNode *mid = getMid(head);
-        ListNode *left = head;
-        ListNode *right = mid->next;
-        mid->next = NULL;
-        
+
+        ListNode *middle = getMiddle(head);
+        ListNode *left = head, *right = middle->next;
+        middle->next = NULL;
+
         left = sortList(left);
         right = sortList(right);
-        
-        ListNode *res = sort(left, right);
-        return res;
+
+        return sortLL(left, right);
     }
 };
