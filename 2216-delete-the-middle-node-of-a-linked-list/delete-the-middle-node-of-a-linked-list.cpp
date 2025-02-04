@@ -21,17 +21,12 @@ public:
 
     ListNode* deleteMiddle(ListNode* head) {
         
-        if(head == NULL || head->next == NULL) {
+        if(head->next == NULL) {
             return NULL;
         }
 
-        if(head->next->next == NULL) {
-            head->next = NULL;
-            return head;
-        }
-
-        ListNode *beforeMiddleNode = getMiddle(head);
-        beforeMiddleNode->next = beforeMiddleNode->next->next;
+        ListNode *middle = getMiddle(head);
+        middle->next = middle->next->next;
         return head;
     }
 };
