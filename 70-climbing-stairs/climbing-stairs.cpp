@@ -1,15 +1,24 @@
 class Solution {
 public:
-    int climbStairs(int n) {
+    int findSteps(int n, vector<int> &dp) {
         
-        // Tabulation space optimised
-        int prev1 = 1, prev2 = 1, curr = 0;
-        
-        for(int i=2; i<=n; i++){
-            curr = prev1 + prev2;
-            prev2 = prev1;
-            prev1 = curr;
+        if(n < 0) {
+            return 0;
         }
-        return prev1;
+
+        if(n == 0) {
+            return 1;
+        }
+
+        if(dp[n] != -1) {
+            return dp[n];
+        }
+
+        return dp[n] = findSteps(n-1, dp) + findSteps(n-2, dp);
+    }
+
+    int climbStairs(int n) {
+        vector<int> dp(n+1, -1);
+        return findSteps(n, dp);
     }
 };
