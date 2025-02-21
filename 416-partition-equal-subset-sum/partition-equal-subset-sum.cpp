@@ -1,136 +1,45 @@
-// class Solution {
-// public:
-//     bool f(int ind, int target, vector<int> &nums, vector<vector<int>> &dp){
-        
-//         if(target == 0){
-//             return true;
-//         }
-        
-//         if(ind == 0){
-//             return nums[0] == target;
-//         }
-        
-//         if(dp[ind][target] != -1){
-//             return dp[ind][target];
-//         }
-        
-//         int notPick = f(ind-1, target, nums, dp);
-//         int pick = false;
-        
-//         if(nums[ind] <= target){
-//             pick = f(ind-1, target-nums[ind], nums, dp);
-//         }
-        
-//         return dp[ind][target] = pick || notPick;
-//     }
-    
-//     bool canPartition(vector<int>& nums) {
-        
-//         // Memoization
-//         int n = nums.size(), totalSum = 0;
-        
-//         for(auto it: nums){
-//             totalSum += it;
-//         }
-        
-//         if(totalSum % 2 == 1){
-//             return false;
-//         }
-        
-//         int k = totalSum / 2;
-        
-//         vector<vector<int>> dp(n, vector<int>(k+1, -1));
-        
-//         return f(n-1, k, nums, dp);
-//     }
-// };
-
 class Solution {
 public:
-    bool canPartition(vector<int>& nums) {
-        
-        // Tabulation
-        int n = nums.size(), totalSum = 0, k = 0;
-        
-        for(auto it: nums){
-            totalSum += it;
+    bool checkIf(int ind, int target, vector<vector<int>> &dp, vector<int> &nums) {
+        if(target == 0) {
+            return true;
         }
-        
-        if(totalSum % 2 == 1){
-            return false;
+
+        if(ind == 0) {
+            return target == nums[ind];
         }
-        
-        k = totalSum / 2;
-        
-        vector<vector<bool>> dp(n, vector<bool>(k+1, false));
-        
-        for(int i=0; i<n; i++){
-            dp[i][0] = true;
+
+        if(dp[ind][target] != -1) {
+            return dp[ind][target];
         }
-        
-        if(nums[0] <= k){
-            dp[0][nums[0]] = true;
+
+        int notPick = checkIf(ind-1, target, dp, nums);
+        int pick = false;
+        if(nums[ind] <= target) {
+            pick = checkIf(ind-1, target-nums[ind], dp, nums);
         }
-        
-        for(int i=1; i<n; i++){
-            for(int target=1; target<=k; target++){
-                
-                bool notPick = dp[i-1][target];
-                bool pick = false;
-                if(nums[i] <= target){
-                    pick = dp[i-1][target-nums[i]];
-                }
-                
-                dp[i][target] = pick || notPick;
-            }
-        }
-        return dp[n-1][k];
+
+        return dp[ind][target] = pick || notPick;
     }
-};
 
-
-
-
-class Solution {
-public:
     bool canPartition(vector<int>& nums) {
-         // Tabulation Space optimised
-        int n = nums.size(), totalSum = 0, k = 0;
-        
-        for(auto it: nums){
-            totalSum += it;
-        }
-        
-        if(totalSum % 2 == 1){
+        // Memoization
+        int n = nums.size(), sum = 0, k;
+        if(n == 1) {
             return false;
         }
-        
-        k = totalSum / 2;
-        
-        vector<bool> dp(k+1, false);
-        dp[0] = true;
-        
-        if(nums[0] <= k){
-            dp[nums[0]] = true;
+
+        for(auto it: nums) {
+            sum += it;
         }
-        
-        for(int i=1; i<n; i++){
-            
-            vector<bool> temp(k+1, false);
-            temp[0] = true;
-            for(int target=1; target<=k; target++){
-                
-                bool notPick = dp[target];
-                bool pick = false;
-                
-                if(nums[i] <= target){
-                    pick = dp[target-nums[i]];
-                }
-                
-                temp[target] = pick || notPick;
-            }
-            dp = temp;
+
+        k = sum / 2;
+
+        if(sum % 2 == 1) {
+            return false;
         }
-        return dp[k];
+
+        vector<vector<int>> dp(n, vector<int>(k+1, -1));
+        return checkIf(n-1, k, dp, nums);
     }
 };
