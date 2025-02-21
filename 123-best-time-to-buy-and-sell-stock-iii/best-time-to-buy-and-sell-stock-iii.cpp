@@ -1,32 +1,30 @@
 class Solution {
 public:
-    int f(int ind, int buy, int transactions, vector<vector<vector<int>>> &dp, vector<int> &prices) {
-        if(ind == prices.size() || transactions >= 2) {
-            return 0;
-        }
-
-        if(dp[ind][buy][transactions] != -1) {
-            return dp[ind][buy][transactions];
-        }
-
-        if(buy == 0) {
-            int notPick = f(ind+1, buy, transactions, dp, prices);
-            int pick = -prices[ind] + f(ind+1, buy+1, transactions, dp, prices);
-
-            return dp[ind][buy][transactions] = max(pick, notPick);
-        }
-        else{
-            int notPick = f(ind+1, buy, transactions, dp, prices);
-            int pick = prices[ind] + f(ind+1, buy-1, transactions+1, dp, prices);
-
-            return dp[ind][buy][transactions] = max(pick, notPick);
-        }
-    }
-
     int maxProfit(vector<int>& prices) {
-        // Memoization
+        // Tabulation - space optimised
         int n = prices.size();
-        vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(2, -1)));
-        return f(0, 0, 0, dp, prices);
+        vector<vector<int>> dp(2, vector<int>(3, 0));
+
+        for(int i=n-1; i>=0; i--) {
+            vector<vector<int>> curr(2, vector<int>(3, 0));
+            for(int buy=0; buy<=1; buy++) {
+                for(int transactions=1; transactions<=2; transactions++) {
+                    if(buy == 0) {
+                        int notPick = dp[buy][transactions];
+                        int pick = -prices[i] + dp[buy+1][transactions];
+
+                        curr[buy][transactions] = max(pick, notPick);
+                    }
+                    else{
+                        int notPick = dp[buy][transactions];
+                        int pick = prices[i] + dp[buy-1][transactions-1];
+
+                        curr[buy][transactions] = max(pick, notPick);
+                    }
+                }
+            }
+            dp = curr;
+        }
+        return dp[0][2];
     }
 };
