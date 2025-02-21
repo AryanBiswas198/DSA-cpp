@@ -1,39 +1,33 @@
 class Solution {
 public:
-    int findMini(int row, int col, vector<vector<int>> &dp, vector<vector<int>> &matrix) {
-        if(col < 0 || col >= matrix.size()) {
-            return 1e9;
-        }
-        if(row == 0) {
-            return matrix[row][col];
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        // Tabulation
+        int n = matrix.size();
+        vector<vector<int>> dp(n, vector<int>(n, 1e9));
+
+        for(int j=0; j<n; j++) {
+            dp[0][j] = matrix[0][j];
         }
 
-        if(dp[row][col] != 1e9) {
-            return dp[row][col];
-        }
+        for(int i=1; i<n; i++) {
+            for(int j=0; j<n; j++) {
+                int down = matrix[i][j] + dp[i-1][j];
+                int downLeft = 1e9, downRight = 1e9;
+                if(j-1 >= 0) {
+                    downLeft = matrix[i][j] + dp[i-1][j-1];
+                }
 
-        int mini = 1e9;
-        for(int j=-1; j<=1; j++) {
-            mini = min(mini, findMini(row-1, col+j, dp, matrix) + matrix[row][col]);
+                if(j+1<n) {
+                    downRight = matrix[i][j] + dp[i-1][j+1];
+                }
+
+                dp[i][j] = min(down, min(downLeft, downRight));
+            }
         }
         
-        return dp[row][col] = mini;
-
-        // int downLeft = findMini(row-1, col-1, dp, matrix) + matrix[row][col];
-        // int down = findMini(row-1, col, dp, matrix) + matrix[row][col];
-        // int downRight = findMini(row-1, col+1, dp, matrix) + matrix[row][col];
-
-        // return dp[row][col] = min(downLeft, min(down, downRight));
-    }
-
-    int minFallingPathSum(vector<vector<int>>& matrix) {
-        // Memoization
-        int n = matrix.size(), m = matrix[0].size();
-        vector<vector<int>> dp(n, vector<int>(m, 1e9));
         int mini = 1e9;
-
-        for(int j=0; j<m; j++) {
-            mini = min(mini, findMini(n-1, j, dp, matrix));
+        for(int j=0; j<n; j++) {
+            mini = min(mini, dp[n-1][j]);
         }
         return mini;
     }
