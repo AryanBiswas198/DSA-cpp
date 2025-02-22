@@ -1,31 +1,28 @@
 class Solution {
 public:
-    int f(int ind, int amount, vector<vector<int>> &dp, vector<int> &coins) {
-        if(ind == 0) {
-            if(amount % coins[ind] == 0) {
-                return amount / coins[ind];
-            }
-            return 1e9;
-        }
-
-        if(dp[ind][amount] != -1) {
-            return dp[ind][amount];
-        }
-        int pick = 1e9;
-        int notPick = f(ind-1, amount, dp, coins);
-        if(coins[ind] <= amount) {
-            pick = 1 + f(ind, amount-coins[ind], dp, coins);
-        }
-
-        return dp[ind][amount] = min(pick, notPick);
-    }
-
     int coinChange(vector<int>& coins, int amount) {
-        // Memoization
+        // Tabulation
         int n = coins.size();
-        vector<vector<int>> dp(n, vector<int>(amount+1, -1));
-        int ans = f(n-1, amount, dp, coins);
+        vector<vector<int>> dp(n, vector<int>(amount+1, 1e9));
 
-        return ans >= 1e9 ? -1 : ans;
+        for(int amt=0; amt<=amount; amt++) {
+            if(amt % coins[0] == 0) {
+                dp[0][amt] = amt / coins[0];
+            }
+        }
+
+        for(int i=1; i<n; i++) {
+            for(int amt=0; amt<=amount; amt++) {
+                int notPick = dp[i-1][amt];
+                int pick = 1e9;
+                if(coins[i] <= amt) {
+                    pick = 1 + dp[i][amt-coins[i]];
+                }
+
+                dp[i][amt] = min(pick, notPick);
+            }
+        }
+
+        return dp[n-1][amount] >= 1e9 ? -1 : dp[n-1][amount];
     }
 };
