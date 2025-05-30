@@ -2,21 +2,13 @@ class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         
+        unordered_map<int, vector<int>> adjList;
         vector<int> indegree(numCourses, 0);
         queue<int> q;
-        unordered_map<int, vector<int>> adj;
-        int cnt = 0;
 
-        for(int i=0; i<prerequisites.size(); i++) {
-            int u = prerequisites[i][0];
-            int v = prerequisites[i][1];
-            adj[u].push_back(v);
-        }
-
-        for(int i=0; i<numCourses; i++) {
-            for(auto it: adj[i]) {
-                indegree[it]++;
-            }
+        for(auto it: prerequisites) {
+            adjList[it[0]].push_back(it[1]);
+            indegree[it[1]]++;
         }
 
         for(int i=0; i<numCourses; i++) {
@@ -25,16 +17,18 @@ public:
             }
         }
 
+        int cnt = 0;
+
         while(!q.empty()) {
-            int element = q.front();
+            int node = q.front();
             q.pop();
 
             cnt++;
 
-            for(auto it: adj[element]) {
-                indegree[it]--;
-                if(indegree[it] == 0) {
-                    q.push(it);
+            for(auto adjNode: adjList[node]) {
+                indegree[adjNode]--;
+                if(indegree[adjNode] == 0) {
+                    q.push(adjNode);
                 }
             }
         }
