@@ -4,14 +4,18 @@ public:
         
         sort(g.begin(), g.end());
         sort(s.begin(), s.end());
-        int n = g.size(), m = s.size(), i = 0, j = 0, cnt = 0;
 
-        while(i < n && j < m) {
-            if(g[i] <= s[j]) {
+        int i=0, j=0, n = g.size(), m = s.size(), cnt = 0;
+
+        while(i<n && j<m) {
+            if(s[j] >= g[i]) {
                 cnt++;
+                j++;
                 i++;
             }
-            j++;
+            else if(s[j] < g[i]) {
+                j++;
+            }
         }
         return cnt;
     }
