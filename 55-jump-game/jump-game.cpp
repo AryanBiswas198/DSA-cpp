@@ -1,22 +1,32 @@
 class Solution {
 public:
-    bool canJump(vector<int>& nums) {
-        
-        // Tabulation
-        int n = nums.size();
-        vector<int> dp(n, 0);
-        
-        dp[n-1] = true;
-        
-        for(int ind=n-2; ind>=0; ind--){
-            for(int i=1; i<=nums[ind] && ind+i<n; i++){
-                if(dp[ind+i] == true){
-                    dp[ind] = true;
-                    break;
-                }
+    bool f(int ind, vector<int> &dp, vector<int> &nums) {
+        if(ind == nums.size()-1) {
+            return true;
+        }
+
+        if(ind >= nums.size()) {
+            return false;
+        }
+
+        if(dp[ind] != -1) {
+            return dp[ind];
+        }
+
+        for(int i=1; i<=nums[ind]; i++) {
+            if(f(ind+i, dp, nums)) {
+                return dp[ind] = true;
             }
         }
+        return dp[ind] = false;
+    }
+
+    bool canJump(vector<int>& nums) {
         
-        return dp[0];
+        // Memoization
+        int n = nums.size();
+        vector<int> dp(n, -1); 
+
+        return f(0, dp, nums);
     }
 };
