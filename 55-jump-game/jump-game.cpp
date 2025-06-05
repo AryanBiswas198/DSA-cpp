@@ -23,10 +23,20 @@ public:
 
     bool canJump(vector<int>& nums) {
         
-        // Memoization
+        // Tabulation
         int n = nums.size();
-        vector<int> dp(n, -1); 
+        vector<int> dp(n, 0); 
+        dp[n-1] = true;
 
-        return f(0, dp, nums);
+        for(int i=n-2; i>=0; i--) {
+            for(int j=1; j<=nums[i] && i+j<n; j++) {
+                if(dp[i+j] == true) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return dp[0];
     }
 };
