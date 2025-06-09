@@ -19,6 +19,7 @@ public:
         while(l1 != NULL || l2 != NULL || carry != 0) {
             int sum = 0;
             sum += carry;
+
             if(l1 != NULL) {
                 sum += l1->val;
             }
@@ -27,12 +28,12 @@ public:
                 sum += l2->val;
             }
 
-            int digit = sum%10;
+            int digit = sum % 10;
             ListNode *newNode = new ListNode(digit);
             ansTail->next = newNode;
             ansTail = ansTail->next;
 
-            carry = sum/10;
+            carry = sum / 10;
             if(l1 != NULL) {
                 l1 = l1->next;
             }
