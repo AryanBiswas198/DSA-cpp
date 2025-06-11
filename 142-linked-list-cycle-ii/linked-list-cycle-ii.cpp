@@ -14,20 +14,18 @@ public:
             return NULL;
         }
 
-        ListNode *slow = head, *fast = head, *intersection = head;
-        while(fast != NULL) {
+        ListNode *slow = head, *fast = head;
+        while(fast != NULL && fast->next != NULL) {
             slow = slow->next;
-            fast = fast->next;
-            if(fast != NULL) {
-                fast = fast->next;
-            }
+            fast = fast->next->next;
 
             if(slow == fast) {
-                while(slow != intersection) {
-                    slow = slow->next;
+                ListNode *intersection = slow, *temp = head;
+                while(intersection != temp) {
+                    temp = temp->next;
                     intersection = intersection->next;
                 }
-                return slow;
+                return temp;
             }
         }
         return NULL;
