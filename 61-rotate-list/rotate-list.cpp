@@ -17,18 +17,17 @@ public:
         }
 
         ListNode *temp = head;
-        int cnt = 1;
-
+        int len = 1;
         while(temp->next != NULL) {
             temp = temp->next;
-            cnt++;
+            len++;
         }
 
         temp->next = head;
-        k = k%cnt;
-        int len = cnt - k;
 
-        while(len--) {
+        k = k%len;
+        int cnt = len - k;
+        while(cnt--) {
             temp = temp->next;
         }
 
