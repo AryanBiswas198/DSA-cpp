@@ -18,42 +18,44 @@ class Solution {
 public:
     Node* copyRandomList(Node* head) {
         
-        if(head == NULL){
+        if(head == NULL) {
             return head;
         }
-        
-        Node *cloneHead = NULL, *cloneNode = NULL, *temp = head;
-        
-        while(temp != NULL){
+
+        Node *ansHead = NULL, *ansTail = ansHead, *temp = head;
+
+        while(temp != NULL) {
             Node *newNode = new Node(temp->val);
-            if(cloneHead == NULL){
-                cloneHead = newNode;
-                cloneNode = cloneHead;
+            if(ansHead == NULL) {
+                ansHead = newNode;
+                ansTail = ansHead;
             }
             else{
-                cloneNode->next = newNode;
-                cloneNode = cloneNode->next;
+                ansTail->next = newNode;
+                ansTail = ansTail->next;
             }
             temp = temp->next;
         }
-        
-        unordered_map<Node*, Node*> originalToCloneNode;
-        
-        temp = head, cloneNode = cloneHead;
-        
-        while(temp != NULL && cloneNode != NULL){
-            originalToCloneNode[temp] = cloneNode;
+
+        unordered_map<Node*, Node*> mpp;
+        temp = head;
+        ansTail = ansHead;
+
+        while(temp != NULL && ansTail != NULL) {
+            mpp[temp] = ansTail;
             temp = temp->next;
-            cloneNode = cloneNode->next;
+            ansTail = ansTail->next;
         }
-        
-        temp = head, cloneNode = cloneHead;
-        
-        while(cloneNode != NULL){
-            cloneNode->random = originalToCloneNode[temp->random];
-            cloneNode = cloneNode->next;
+
+        temp = head;
+        ansTail = ansHead;
+
+        while(temp != NULL && ansTail != NULL) {
+            ansTail->random = mpp[temp->random];
             temp = temp->next;
+            ansTail = ansTail->next;
         }
-        return cloneHead;
+
+        return ansHead;
     }
 };
