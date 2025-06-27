@@ -13,27 +13,29 @@ class Solution {
 public:
     bool findTarget(TreeNode* root, int k) {
         
+        set<int> st;
         queue<TreeNode*> q;
         q.push(root);
 
-        set<int> st;
         while(!q.empty()) {
+            auto sz = q.size();
+            while(sz--) {
+                TreeNode *front = q.front();
+                q.pop();
 
-            auto node = q.front();
-            q.pop();
+                int sum = k - front->val;
+                if(st.find(sum) != st.end()) {
+                    return true;
+                }
+                st.insert(front->val);
 
-            int sum = k - node->val;
-            if(st.find(sum) != st.end()) {
-                return true;
-            }
+                if(front->left != NULL) {
+                    q.push(front->left);
+                }
 
-            st.insert(node->val);
-            if(node->left != NULL) {
-                q.push(node->left);
-            }
-
-            if(node->right != NULL) {
-                q.push(node->right);
+                if(front->right != NULL) {
+                    q.push(front->right);
+                }
             }
         }
         return false;
