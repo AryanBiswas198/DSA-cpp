@@ -13,37 +13,38 @@ class Solution {
 public:
     vector<vector<int>> verticalTraversal(TreeNode* root) {
         
+        vector<vector<int>> ans;
         queue<pair<TreeNode*, pair<int, int>>> q;
-        q.push({root, {0, 0}});
         map<int, map<int, vector<int>>> mpp;
 
-        vector<vector<int>> ans;
+        q.push({root, {0, 0}});
 
         while(!q.empty()) {
             int sz = q.size();
-            for(int i=0; i<sz; i++) {
+            while(sz--) {
                 auto front = q.front();
                 q.pop();
 
-                TreeNode *val = front.first;
-                int hd = front.second.first, level = front.second.second;
+                TreeNode *node = front.first;
+                int hd = front.second.first, lvl = front.second.second;
 
-                mpp[hd][level].push_back(val->val);
+                mpp[hd][lvl].push_back(node->val);
 
-                if(val->left != NULL) {
-                    q.push({val->left, {hd-1, level+1}});
+                if(node->left != NULL) {
+                    q.push({node->left, {hd-1, lvl+1}});
                 }
 
-                if(val->right != NULL) {
-                    q.push({val->right, {hd+1, level+1}});
+                if(node->right != NULL) {
+                    q.push({node->right, {hd+1, lvl+1}});
                 }
-                sort(mpp[hd][level].begin(), mpp[hd][level].end());
+
+                sort(mpp[hd][lvl].begin(), mpp[hd][lvl].end());
             }
         }
 
         for(auto i: mpp) {
             vector<int> temp;
-            for(auto j: i.second){
+            for(auto j: i.second) {
                 for(auto k: j.second) {
                     temp.push_back(k);
                 }
