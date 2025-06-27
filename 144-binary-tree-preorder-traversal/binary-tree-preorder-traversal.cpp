@@ -13,29 +13,31 @@ class Solution {
 public:
     vector<int> preorderTraversal(TreeNode* root) {
         
-        // Iterative Solution
-        if(!root) {
+        // Morris preorder traversal
+        if(root == NULL) {
             return {};
         }
 
-        stack<TreeNode*> st;
-        st.push(root);
-        vector<int> preorder;
+        vector<int> ans;
+        TreeNode *curr = root;
 
-        while(!st.empty()) {
-            auto top = st.top();
-            st.pop();
-
-            preorder.push_back(top->val);
-
-            if(top->right) {
-                st.push(top->right);
+        while(curr != NULL) {
+            if(curr->left == NULL) {
+                ans.push_back(curr->val);
+                curr = curr->right;
             }
-
-            if(top->left) {
-                st.push(top->left);
+            else{
+                ans.push_back(curr->val);
+                TreeNode *pre = curr->left;
+                while(pre->right != NULL && pre->right != curr) {
+                    pre = pre->right;
+                }
+                pre->right = curr->right;
+                curr->right = curr->left;
+                curr->left = NULL;
+                curr = curr->right;
             }
         }
-        return preorder;
+        return ans;
     }
 };
