@@ -11,17 +11,17 @@
  */
 class Solution {
 public:
-    int findIfBalanced(TreeNode *root) {
+    int checkBalance(TreeNode *root) {
         if(root == NULL) {
             return 0;
         }
 
-        int left = findIfBalanced(root->left);
+        int left = checkBalance(root->left);
         if(left == -1) {
             return -1;
         }
 
-        int right = findIfBalanced(root->right);
+        int right = checkBalance(root->right);
         if(right == -1) {
             return -1;
         }
@@ -29,6 +29,7 @@ public:
         if(abs(left - right) > 1) {
             return -1;
         }
+
         return 1 + max(left, right);
     }
 
@@ -38,6 +39,6 @@ public:
             return true;
         }
 
-        return findIfBalanced(root) != -1;
+        return checkBalance(root) != -1;
     }
 };
