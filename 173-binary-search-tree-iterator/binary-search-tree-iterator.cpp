@@ -11,9 +11,8 @@
  */
 class BSTIterator {
 public:
-    int i;
     vector<int> inorder;
-
+    int i;
     void findInorder(TreeNode *root) {
         if(root == NULL) {
             return ;
@@ -25,8 +24,8 @@ public:
     }
 
     BSTIterator(TreeNode* root) {
-        findInorder(root);
         i = 0;
+        findInorder(root);
     }
     
     int next() {
