@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    bool checkIfValid(TreeNode *root, long long mini, long long maxi) {
+    bool checkValidBST(TreeNode *root, long long mini, long long maxi) {
         if(root == NULL) {
             return true;
         }
@@ -20,10 +20,10 @@ public:
             return false;
         }
 
-        return checkIfValid(root->left, mini, root->val) && checkIfValid(root->right, root->val, maxi);
+        return checkValidBST(root->left, mini, root->val) && checkValidBST(root->right, root->val, maxi);
     }
 
     bool isValidBST(TreeNode* root) {
-         return checkIfValid(root, LONG_MIN, LONG_MAX);
+        return checkValidBST(root, LONG_MIN, LONG_MAX);
     }
 };
