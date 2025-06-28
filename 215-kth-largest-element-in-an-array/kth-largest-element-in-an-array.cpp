@@ -7,10 +7,11 @@ public:
             pq.push(it);
         }
 
-        int target = k-1;
-        while(target--) {
+        int ans = -1;
+        while(k--) {
+            ans = pq.top();
             pq.pop();
         }
-        return pq.top();
+        return ans;
     }
 };
