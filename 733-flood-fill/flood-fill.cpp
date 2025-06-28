@@ -9,36 +9,37 @@ public:
 
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
         
-        vector<vector<int>> newVec = image;
-        int n = newVec.size(), m = newVec[0].size(), originalColor = newVec[sr][sc];
+        int n = image.size(), m = image[0].size(), originalColor = image[sr][sc];
 
         if(color == originalColor) {
-            return newVec;
+            return image;
         }
 
-        int drow[] = {-1, 0, 1, 0};
-        int dcol[] = {0, 1, 0, -1};
+        vector<vector<int>> ans = image;
+        ans[sr][sc] = color;
 
         queue<pair<int, int>> q;
         q.push({sr, sc});
 
-        newVec[sr][sc] = color;
+        int drow[] = {-1, 0, 1, 0};
+        int dcol[] = {0, 1, 0, -1};
 
         while(!q.empty()) {
             auto front = q.front();
             q.pop();
-            
+
             int row = front.first, col = front.second;
 
             for(int i=0; i<4; i++) {
                 int nrow = row + drow[i];
                 int ncol = col + dcol[i];
-                if(isValid(nrow, ncol, n, m) && newVec[nrow][ncol] == originalColor) {
-                    newVec[nrow][ncol] = color;
+
+                if(isValid(nrow, ncol, n, m) && ans[nrow][ncol] == originalColor) {
+                    ans[nrow][ncol] = color;
                     q.push({nrow, ncol});
                 }
             }
         }
-        return newVec;
+        return ans;
     }
 };
