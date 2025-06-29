@@ -1,20 +1,19 @@
-#include<bits/stdc++.h>
 class MinStack {
 public:
     stack<pair<int, int>> st;
-    int mini;
+    int mini = INT_MAX;
     MinStack() {
         
     }
     
     void push(int val) {
-        if(st.empty()) {
-            mini = val;
-        }
-        else{
-            mini = min(st.top().second, val);
-        }
-        st.push({val, mini});
+       if(st.empty()) {
+        mini = val;
+       }
+       else{
+        mini = min(st.top().second, val);
+       }
+       st.push({val, mini});
     }
     
     void pop() {
@@ -22,6 +21,9 @@ public:
     }
     
     int top() {
+        if(st.empty()) {
+            return -1;
+        }
         return st.top().first;
     }
     
