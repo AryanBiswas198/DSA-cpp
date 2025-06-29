@@ -6,25 +6,17 @@ public:
     }
     
     void push(int x) {
-        dq.push_front(x);
+        dq.push_back(x);
     }
     
     int pop() {
-        if(dq.empty()) {
-            return -1;
-        }
-        else{
-            int val = dq.front();
-            dq.pop_front();
-            return val;
-        }
+        int val = dq.back();
+        dq.pop_back();
+        return val;
     }
     
     int top() {
-        if(!dq.empty()) {
-            return dq.front();
-        }
-        return -1;
+        return dq.back();
     }
     
     bool empty() {
