@@ -1,31 +1,29 @@
-#include<bits/stdc++.h>
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
         
-        vector<int> ans;
+        int n = nums.size();
         map<int, int> mpp;
         priority_queue<pair<int, int>> pq;
+        vector<int> ans;
 
-        for(auto it: nums) {
-            if(mpp.find(it) != mpp.end()) {
-                mpp[it]++;
+        for(int i=0; i<n; i++) {
+            if(mpp.find(nums[i]) != mpp.end()) {
+                mpp[nums[i]] += 1;
             }
             else{
-                mpp.insert({it, 1});
+                mpp[nums[i]] = 1;
             }
         }
 
         for(auto it: mpp) {
-            int val = it.first, cnt = it.second;
-            pq.push({cnt, val});
+            pq.push({it.second, it.first});
         }
-        
+
         while(!pq.empty() && k--) {
-            int val = pq.top().second;
+            ans.push_back(pq.top().second);
             pq.pop();
-            ans.push_back(val);
         }
         return ans;
     }
-};
+};  
