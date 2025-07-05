@@ -2,20 +2,18 @@ class Solution {
 public:
     int findLucky(vector<int>& arr) {
         
+        int n = arr.size(), ans = -1;
         unordered_map<int, int> mpp;
-        int maxi = INT_MIN;
-        for(auto it: arr){
+        for(auto it: arr) {
             mpp[it]++;
         }
-        
-        for(auto it: arr){
-            if(mpp.find(it) != mpp.end()){
-                if(it == mpp[it]){
-                    maxi = max(maxi, it);
-                }
-                mpp.erase(it);
+
+        for(auto it: mpp) {
+            int num = it.first, cnt = it.second;
+            if(num == cnt) {
+                ans = max(ans, num);
             }
         }
-        return maxi == INT_MIN ? -1 : maxi;
+        return ans != -1 ? ans : -1;
     }
 };
