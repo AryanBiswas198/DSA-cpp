@@ -1,49 +1,52 @@
 class Twitter {
 public:
-    unordered_map<int, set<int>> friends;
-    unordered_map<int, vector<pair<int, int>>> tweets;
-    int cnt;
+    long long time = 0;
+    unordered_map<int, unordered_set<int>> fol;
+    unordered_map<int, vector<pair<long long, int>>> tweets;
     Twitter() {
-        cnt = 0;
-        friends.empty();
-        tweets.empty();
+        time = 0;
     }
     
     void postTweet(int userId, int tweetId) {
-        tweets[userId].push_back({cnt++, tweetId});
+        tweets[userId].push_back({time++, tweetId});
     }
     
     vector<int> getNewsFeed(int userId) {
-        priority_queue<pair<int, int>> pq;
-        vector<int> ans;
-        int i = 0;
+        priority_queue<pair<long long, int>> pq;
+        vector<int> feed;
 
         for(auto it: tweets[userId]) {
-            int cnt = it.first, tweetId = it.second;
-            pq.push({cnt, tweetId});
+            long long t = it.first;
+            int tweetId = it.second;
+            pq.push({t, tweetId});
         }
 
-        for(auto followeeId: friends[userId]) {
-            for(auto it: tweets[followeeId]) {
-                int cnt = it.first, tweetId = it.second;
-                pq.push({cnt, tweetId});
+        for(auto follower: fol[userId]) {
+            for(auto it: tweets[follower]) {
+                long long t = it.first;
+                int tweetId = it.second;
+                pq.push({t, tweetId});
             }
         }
 
+        int i = 0;
         while(!pq.empty() && i < 10) {
-            ans.push_back(pq.top().second);
+            auto top = pq.top();
             pq.pop();
+
+            int tweetId = top.second;
+            feed.push_back(tweetId);
             i++;
         }
-        return ans;
+        return feed;
     }
     
     void follow(int followerId, int followeeId) {
-        friends[followerId].insert(followeeId);
+        fol[followerId].insert(followeeId);
     }
     
     void unfollow(int followerId, int followeeId) {
-        friends[followerId].erase(followeeId);
+        fol[followerId].erase(followeeId);
     }
 };
 
