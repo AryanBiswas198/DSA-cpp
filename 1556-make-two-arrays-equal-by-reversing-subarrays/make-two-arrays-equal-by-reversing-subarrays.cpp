@@ -2,20 +2,16 @@ class Solution {
 public:
     bool canBeEqual(vector<int>& target, vector<int>& arr) {
         
-        unordered_map<int, int> mpp1, mpp2;
+        sort(target.begin(), target.end());
+        sort(arr.begin(), arr.end());
+
+        int i = 0;
+
         for(auto it: target) {
-            mpp1[it]++;
-        }
-
-        for(auto it: arr) {
-            mpp2[it]++;
-        }
-
-        for(auto it: mpp1) {
-            int num = it.first, cnt = it.second;
-            if(cnt != mpp2[num]) {
-                return false;
+            if(it != arr[i]) {
+                return false;    
             }
+            i++;
         }
         return true;
     }
