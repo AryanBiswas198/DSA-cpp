@@ -2,7 +2,7 @@ class Solution {
 public:
     vector<int> limitOccurrences(vector<int>& nums, int k) {
         
-        int n = nums.size(), cnt = 1, prevEle = nums[0];
+        int n = nums.size(), cnt = 1;
         vector<int> ans;
         ans.push_back(nums[0]);
 
